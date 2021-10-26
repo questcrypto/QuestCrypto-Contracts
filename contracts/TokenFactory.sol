@@ -10,10 +10,6 @@ contract QuestAssetFactory{
 
         QuestCryptoAsset contractAddress = new QuestCryptoAsset(
             _baseURI,
-            1000000,
-            1000000,
-            1000000,
-            1000000,
             msg.sender
         );
         // tokenAddresses[tokenCounter] = address(contractAddress);
