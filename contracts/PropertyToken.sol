@@ -3,8 +3,10 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract PropertyToken is ERC1155 {
+contract QuestCryptoAsset is ERC1155, Ownable {
+    string bURI;
     uint256 public constant RIGHT_TO_EQUITY = 0;
     uint256 public constant RIGHT_TO_MANAGEMENT = 1;
     uint256 public constant RIGHT_TO_RENT = 2;
@@ -22,24 +24,41 @@ contract PropertyToken is ERC1155 {
     uint256 public QUEST_TOKEN_PRICE = 10**14; //(0.0001 MATIC)
     uint256 public RENT_TOKEN_PRICE = 2 * 10**13; //(0.00002 MATIC)
     uint256 public SUBSURFACE_TOKEN_PRICE = 2 * 10**13; //(0.00002 MATIC)
-    
+    uint16 [] ordering;
+    bool public approvalStatus;
     modifier isLessThanMaxSupply(uint256 _id,uint256 _price,uint256 _limit){
         require(balanceOf(msg.sender,_id) + msg.value/_price < _limit);
         _;
     }
-    modifier isAvailable(){
-        //Checks if certain right is available
-    }
-    constructor(uint256 _price,uint256 _rentTokens,uint256 _subsurfaceTokens,uint256 _carbonCreditTokens, address _managingCompany) public ERC1155("https://game.example/api/item/{id}.json") {
+    // modifier isAvailable(){
+    //     //Checks if certain right is available
+    // }
+    // modifier followsOrder(){
+    //     require();
+    //     _;
+    // }
+    constructor(
+        string memory _baseURI,
+        address _managingCompany
+        )  ERC1155("") {
+        bURI = _baseURI;
         _mint(_managingCompany, RIGHT_TO_EQUITY, 1, "");
         _mint(_managingCompany, RIGHT_TO_MANAGEMENT, 1, "");
         _mint(_managingCompany, RIGHT_TO_RENT, 1, "");
         _mint(_managingCompany, SUBSURFACE_RIGHTS, 1, "");
         _mint(_managingCompany, RIGHT_TO_CARBON_CREDITS, 1, "");
-        MAX_FRACTIONAL_EQUITY_RIGHT = _price;
-        MAX_FRACTIONAL_RENT_RIGHT = _rentTokens;
-        MAX_FRACTIONAL_SUBSURFACE_RIGHTS = _subsurfaceTokens;
-        MAX_FRACTIONAL_CARBON_CREDITS = _carbonCreditTokens;
+        approvalStatus = false;
+    }
+    // function updatePrice(){
+        
+    // }
+    function approveProperty() public onlyOwner{
+        approvalStatus = true;
+    }
+    function updateRightOrder(
+        uint16 [] calldata _rightOrder
+        ) public onlyOwner{
+        ordering = _rightOrder;
     }
     function buyEquityRightFraction()public payable {
         _mint(msg.sender,FRACTIONAL_EQUITY_RIGHT,msg.value/QUEST_TOKEN_PRICE,"");
@@ -50,8 +69,8 @@ contract PropertyToken is ERC1155 {
     function buySubsurfaceTokens()public payable {
         _mint(msg.sender,FRACTIONAL_SUBSURFACE_RIGHTS,msg.value/SUBSURFACE_TOKEN_PRICE,"");
     }
-    function baseURI() public pure returns(string memory) {
-        return "https://www.indiafilings.com/learn/wp-content/uploads/2020/07/Sample-Lease-Deed-Format.jpg";
+    function baseURI() public view returns(string memory) {
+        return bURI;
     }
     
 }
