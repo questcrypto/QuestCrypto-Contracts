@@ -1,4 +1,3 @@
-// contracts/GameItems.sol
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -12,7 +11,7 @@ contract QuestCryptoAsset is ERC1155, Ownable {
     mapping(uint256=>string) rights;
     uint256 public constant RIGHT_TO_EQUITY = 0;
     uint256 public constant RIGHT_TO_MANAGEMENT = 1;
-    uint256 public constant RIGHT_TO_RENT = 2;
+    uint256 public constant RIGHT_TO_RESIDENCY = 2;
     uint256 public constant SUBSURFACE_RIGHTS = 3;
     
     uint256 public constant RIGHT_TO_CARBON_CREDITS = 4;
@@ -51,7 +50,7 @@ contract QuestCryptoAsset is ERC1155, Ownable {
         bURI = _baseURI;
         _mint(_managingCompany, RIGHT_TO_EQUITY, 1, "");
         _mint(_managingCompany, RIGHT_TO_MANAGEMENT, 1, "");
-        _mint(_managingCompany, RIGHT_TO_RENT, 1, "");
+        _mint(_managingCompany, RIGHT_TO_RESIDENCY, 1, "");
         _mint(_managingCompany, SUBSURFACE_RIGHTS, 1, "");
         _mint(_managingCompany, RIGHT_TO_CARBON_CREDITS, 1, "");
         approvalStatus = false;
