@@ -31,6 +31,11 @@ contract QuestCryptoAsset is ERC1155, Ownable {
     uint256 public SUBSURFACE_TOKEN_PRICE = 2 * 10**13; //(0.00002 MATIC)
     uint16 [] ordering;
     bool public approvalStatus;
+    address TreasuryAdmin;
+    modifier isTreasuryAdmin(){
+        require(msg.sender==TreasuryAdmin);
+        _;
+    }
     modifier isLessThanMaxSupply(uint256 _id,uint256 _price,uint256 _limit){
         require(balanceOf(msg.sender,_id) + msg.value/_price < _limit);
         _;
@@ -76,13 +81,13 @@ contract QuestCryptoAsset is ERC1155, Ownable {
         ) public onlyOwner{
         ordering = _rightOrder;
     }
-    function buyEquityRightFraction()public payable {
+    function buyEquityRightFraction()public payable isTreasuryAdmin{
         _mint(msg.sender,FRACTIONAL_EQUITY_RIGHT,msg.value/PROPERTY_PRICE,"");
     }
-    function buyRentRight()public payable {
+    function buyRentRight()public payable isTreasuryAdmin{
         _mint(msg.sender,FRACTIONAL_RENT_RIGHT,msg.value/RENT_TOKEN_PRICE,"");
     }
-    function buySubsurfaceTokens()public payable {
+    function buySubsurfaceTokens()public payable isTreasuryAdmin{
         _mint(msg.sender,FRACTIONAL_SUBSURFACE_RIGHTS,msg.value/SUBSURFACE_TOKEN_PRICE,"");
     }
     function baseURI() public view returns(string memory) {
