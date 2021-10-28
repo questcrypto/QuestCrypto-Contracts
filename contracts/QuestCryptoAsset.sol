@@ -27,9 +27,9 @@ contract QuestCryptoAsset is ERC1155, Ownable {
     uint256 public MAX_FRACTIONAL_CARBON_CREDITS;
     
     //property Token Price
-    uint256 public PROPERTY_PRICE = 10**14; //(0.0001 MATIC)
-    uint256 public RENT_TOKEN_PRICE = 2 * 10**13; //(0.00002 MATIC)
-    uint256 public SUBSURFACE_TOKEN_PRICE = 2 * 10**13; //(0.00002 MATIC)
+    uint256 public PROPERTY_PRICE;
+    uint256 public RENT_TOKEN_PRICE;
+    uint256 public SUBSURFACE_TOKEN_PRICE; 
     uint16 [] ordering;
     bool public approvalStatus;
     address TreasuryAdmin;
