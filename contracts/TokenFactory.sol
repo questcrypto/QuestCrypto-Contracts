@@ -14,7 +14,7 @@ contract QuestAssetFactory{
     constructor(){
         HOAadmin = msg.sender;
     }
-    function deployQuestCryptoAsset(string memory _baseURI, address _treasuryAdmin, address _managingCompany, string memory _rightToManagementURI, string memory _rightToEquityURI, string memory _rightToControlURI, string memory _rightToResidencyURI, string memory _rightToSubsurfaceURI ) public onlyHOAadmin returns(address) {
+    function deployQuestCryptoAsset(string memory _baseURI, address _treasuryAdmin, address _managingCompany, bytes memory _rightToManagementURI, bytes memory _rightToEquityURI, bytes memory _rightToControlURI, bytes memory _rightToResidencyURI, bytes memory _rightToSubsurfaceURI ) public onlyHOAadmin returns(address) {
         QuestCryptoAsset contractAddress = new QuestCryptoAsset(
             _baseURI,
             _managingCompany,

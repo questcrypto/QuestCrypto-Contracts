@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract QuestCryptoAsset is ERC1155, Ownable {
+contract QuestCryptoAsset is ERC1155, Ownable, AccessControl {
     string bURI;
     uint256 [] public absoluteRightIDs;
     uint256 [] public fractionalRightIDs;
@@ -43,16 +43,17 @@ contract QuestCryptoAsset is ERC1155, Ownable {
         require(balanceOf(msg.sender,_id) + msg.value/_price < _limit);
         _;
     }
+     
     constructor(
         string memory _baseURI,
         address _managingCompany,
         address _HOAAdmin,
         address _treasuryAdmin,
-        string memory _rightToManagementURI,
-        string memory _rightToEquityURI,
-        string memory _rightToControlURI,
-        string memory _rightToResidencyURI,
-        string memory _rightToSubsurfaceURI
+        bytes memory _rightToManagementURI,
+        bytes memory _rightToEquityURI,
+        bytes memory _rightToControlURI,
+        bytes memory _rightToResidencyURI,
+        bytes memory _rightToSubsurfaceURI
         )  ERC1155("") {
         bURI = _baseURI;
         _mint(_managingCompany, RIGHT_TO_EQUITY, 1, _rightToEquityURI);
@@ -64,6 +65,11 @@ contract QuestCryptoAsset is ERC1155, Ownable {
         grantRole(TREASURY_ADMIN_ROLE, _treasuryAdmin);
         approvalStatus = false;
         transferOwnership(_HOAAdmin);
+        
+    }
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC1155, AccessControl) returns (bool) {
+        return super.supportsInterface(interfaceId);
+        
     }
     function addRight(uint256 _rightId,string calldata _right,bool isAbsolute,uint16 [] calldata _rightOrder)public onlyOwner{
         if(isAbsolute){
