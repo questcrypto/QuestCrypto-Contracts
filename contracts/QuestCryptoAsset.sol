@@ -3,18 +3,21 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 
 contract QuestCryptoAsset is ERC1155, Ownable {
     string bURI;
     uint256 [] public absoluteRightIDs;
     uint256 [] public fractionalRightIDs;
     mapping(uint256=>string) rights;
+    bytes32 public constant HOA_ADMIN_ROLE = keccak256("HOA_ADMIN_ROLE");
+    bytes32 public constant TREASURY_ADMIN_ROLE = keccak256("TREASURY_ADMIN_ROLE");
     uint256 public constant RIGHT_TO_EQUITY = 0;
     uint256 public constant RIGHT_TO_MANAGEMENT = 1;
     uint256 public constant RIGHT_TO_RESIDENCY = 2;
-    uint256 public constant SUBSURFACE_RIGHTS = 3;
+    uint256 public constant RIGHT_TO_CONTROL= 3;
+    uint256 public constant SUBSURFACE_RIGHTS = 4;
     
-    uint256 public constant RIGHT_TO_CARBON_CREDITS = 4;
     uint256 public constant FRACTIONAL_EQUITY_RIGHT = 5;
     uint256 public constant FRACTIONAL_RENT_RIGHT = 6;
     uint256 public constant FRACTIONAL_SUBSURFACE_RIGHTS = 7;
@@ -40,24 +43,25 @@ contract QuestCryptoAsset is ERC1155, Ownable {
         require(balanceOf(msg.sender,_id) + msg.value/_price < _limit);
         _;
     }
-    // modifier isAvailable(uint256 rightId){
-    //     //Checks if certain right is available
-    // }
-    // modifier followsOrder(){
-    //     require();
-    //     _;
-    // }
     constructor(
         string memory _baseURI,
         address _managingCompany,
-        address _HOAAdmin
+        address _HOAAdmin,
+        address _treasuryAdmin,
+        string memory _rightToManagementURI,
+        string memory _rightToEquityURI,
+        string memory _rightToControlURI,
+        string memory _rightToResidencyURI,
+        string memory _rightToSubsurfaceURI
         )  ERC1155("") {
         bURI = _baseURI;
-        _mint(_managingCompany, RIGHT_TO_EQUITY, 1, "");
-        _mint(_managingCompany, RIGHT_TO_MANAGEMENT, 1, "");
-        _mint(_managingCompany, RIGHT_TO_RESIDENCY, 1, "");
-        _mint(_managingCompany, SUBSURFACE_RIGHTS, 1, "");
-        _mint(_managingCompany, RIGHT_TO_CARBON_CREDITS, 1, "");
+        _mint(_managingCompany, RIGHT_TO_EQUITY, 1, _rightToEquityURI);
+        _mint(_managingCompany, RIGHT_TO_MANAGEMENT, 1, _rightToManagementURI);
+        _mint(_managingCompany, RIGHT_TO_RESIDENCY, 1, _rightToResidencyURI);
+        _mint(_managingCompany, RIGHT_TO_CONTROL, 1, _rightToControlURI);
+        _mint(_managingCompany, SUBSURFACE_RIGHTS, 1, _rightToSubsurfaceURI);
+        grantRole(HOA_ADMIN_ROLE, _HOAAdmin);
+        grantRole(TREASURY_ADMIN_ROLE, _treasuryAdmin);
         approvalStatus = false;
         transferOwnership(_HOAAdmin);
     }
@@ -82,12 +86,15 @@ contract QuestCryptoAsset is ERC1155, Ownable {
         ordering = _rightOrder;
     }
     function buyEquityRightFraction()public payable isTreasuryAdmin{
+        require(hasRole(TREASURY_ADMIN_ROLE, msg.sender), "Caller is not a TREASURY_ADMIN_ROLE");
         _mint(msg.sender,FRACTIONAL_EQUITY_RIGHT,msg.value/PROPERTY_PRICE,"");
     }
     function buyRentRight()public payable isTreasuryAdmin{
+        require(hasRole(TREASURY_ADMIN_ROLE, msg.sender), "Caller is not a TREASURY_ADMIN_ROLE");
         _mint(msg.sender,FRACTIONAL_RENT_RIGHT,msg.value/RENT_TOKEN_PRICE,"");
     }
     function buySubsurfaceTokens()public payable isTreasuryAdmin{
+        require(hasRole(TREASURY_ADMIN_ROLE, msg.sender), "Caller is not a TREASURY_ADMIN_ROLE");
         _mint(msg.sender,FRACTIONAL_SUBSURFACE_RIGHTS,msg.value/SUBSURFACE_TOKEN_PRICE,"");
     }
     function baseURI() public view returns(string memory) {
