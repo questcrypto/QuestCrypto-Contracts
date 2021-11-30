@@ -14,12 +14,17 @@ contract QuestAssetFactory{
     constructor(){
         HOAadmin = msg.sender;
     }
-    function deployQuestCryptoAsset(string memory _baseURI,address _managingCompany) public onlyHOAadmin returns(address) {
-
+    function deployQuestCryptoAsset(string memory _baseURI, address _treasuryAdmin, address _managingCompany, bytes memory _rightToManagementURI, bytes memory _rightToEquityURI, bytes memory _rightToControlURI, bytes memory _rightToResidencyURI, bytes memory _rightToSubsurfaceURI ) public onlyHOAadmin returns(address) {
         QuestCryptoAsset contractAddress = new QuestCryptoAsset(
             _baseURI,
             _managingCompany,
-            HOAadmin
+            HOAadmin,
+            _treasuryAdmin,
+            _rightToManagementURI,
+            _rightToEquityURI,
+            _rightToControlURI,
+            _rightToResidencyURI,
+            _rightToSubsurfaceURI
         );
         tokenAddresses[propertyCounter] = address(contractAddress);
         propertyCounter++;

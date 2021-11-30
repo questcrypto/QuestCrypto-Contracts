@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\a\\Documents\\QuestCrypto\\Contracts\\1155-Contracts\\contracts\\QuestCryptoAsset.sol": {
-      "lastModificationDate": 1635508388306,
-      "contentHash": "e9956824995a3485c1a35284c6943475",
+      "lastModificationDate": 1635861818530,
+      "contentHash": "b4c65ce35dc930532f7fa4e52b485c01",
       "sourceName": "contracts/QuestCryptoAsset.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -29,7 +29,8 @@
       },
       "imports": [
         "@openzeppelin/contracts/token/ERC1155/ERC1155.sol",
-        "@openzeppelin/contracts/access/Ownable.sol"
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/access/AccessControl.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -362,8 +363,8 @@
       ]
     },
     "C:\\Users\\a\\Documents\\QuestCrypto\\Contracts\\1155-Contracts\\contracts\\TokenFactory.sol": {
-      "lastModificationDate": 1635420916517,
-      "contentHash": "84885cbc22dd878d6e09434ca1a7eccc",
+      "lastModificationDate": 1635861833992,
+      "contentHash": "7f61c80c731eff6f297f65518c1991ec",
       "sourceName": "contracts/TokenFactory.sol",
       "solcConfig": {
         "version": "0.8.0",
@@ -395,6 +396,113 @@
       ],
       "artifacts": [
         "QuestAssetFactory"
+      ]
+    },
+    "C:\\Users\\a\\Documents\\QuestCrypto\\Contracts\\1155-Contracts\\node_modules\\@openzeppelin\\contracts\\access\\AccessControl.sol": {
+      "lastModificationDate": 1635508762944,
+      "contentHash": "74fb01cf14d85fd1e7f25b22c6472e6e",
+      "sourceName": "@openzeppelin/contracts/access/AccessControl.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IAccessControl.sol",
+        "../utils/Context.sol",
+        "../utils/Strings.sol",
+        "../utils/introspection/ERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "AccessControl"
+      ]
+    },
+    "C:\\Users\\a\\Documents\\QuestCrypto\\Contracts\\1155-Contracts\\node_modules\\@openzeppelin\\contracts\\access\\IAccessControl.sol": {
+      "lastModificationDate": 1635508765990,
+      "contentHash": "e2ed3260ca37d27f68b0ab41f692b407",
+      "sourceName": "@openzeppelin/contracts/access/IAccessControl.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAccessControl"
+      ]
+    },
+    "C:\\Users\\a\\Documents\\QuestCrypto\\Contracts\\1155-Contracts\\node_modules\\@openzeppelin\\contracts\\utils\\Strings.sol": {
+      "lastModificationDate": 1635508767073,
+      "contentHash": "62142442bed149f965c5ed971fae4182",
+      "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
+      "solcConfig": {
+        "version": "0.8.0",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Strings"
       ]
     }
   }
